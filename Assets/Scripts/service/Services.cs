@@ -15,8 +15,13 @@ public class Services : MonoBehaviour
     {
         Instance = this;
     }
-
-    public T Resovle<T>()
+    
+    /// <summary>
+    /// Try to get Service 
+    /// </summary>
+    /// <typeparam name="T"> Generic type </typeparam>
+    /// <returns>Service of type T </returns>
+    public T Resovle<T>() where T : class
     {
         Type typeParameterType = typeof(T);
 
@@ -25,14 +30,23 @@ public class Services : MonoBehaviour
             return (T)services[typeParameterType];
         }
 
-        return default;
+        Debug.LogError(string.Format("Cant Resovle service of type {0}", typeParameterType));
+        return null;
     }
 
+    /// <summary>
+    /// Registar Service
+    /// </summary>
+    /// <param name="o"> Object to Registar </param>
     public void Registar(object o)
     {
         services.Add(o.GetType(), o);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="ObjectType"></param>
     public void DeRegistar(Type ObjectType)
     {
         if(services.ContainsKey(ObjectType))
