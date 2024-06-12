@@ -2,22 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TagSystem : MonoService<TagSystem>
+public class TagData : MonoBehaviour
 {
-
-    public Dictionary<string, Tag> ObjectDirectory = new Dictionary<string, Tag>();
-
-
-
     // Start is called before the first frame update
     void Start()
     {
-        RegisterService();
-    }
-    
-    private void OnDestroy()
-    {
-        UnregisterService();
+        
     }
 
     // Update is called once per frame

@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Tag : MonoBehaviour
 {
+
+    private TagSystem TS;
+    
+    [SerializeField]
+    public string Name;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        TS = Services.Resolve<TagSystem>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
