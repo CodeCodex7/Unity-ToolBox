@@ -391,7 +391,7 @@ public abstract class MonoStateMachine : MonoBehaviour
     /// <summary>
     /// User set Name for the server
     /// </summary>
-    private string m_Name;
+    [SerializeReference] private string m_Name;
     /// <summary>
     /// Get the Active State of the state machine
     /// </summary>
