@@ -34,10 +34,12 @@ public class MessageData
     public int EventID;
     public object Data;
     public Type Type;
+    public string TestData;
 
-    public MessageData(int Id, string Name)
+    public MessageData(int Id, string Name,Type type)
     {
         EventID = Id;
         EventName = Name;
+        Type = type;
     }
 }
