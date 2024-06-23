@@ -1,24 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.TerrainTools;
-using UnityEditor.Timeline;
 using UnityEngine;
 using System.Reflection;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 [CustomEditor(typeof(GlobalEventData))]
 public class GlobalEventlistEditor : Editor
 {
-
-    string LibaryLocation;
     GlobalEventData data;
-    public void OnValidate()
-    {
-        
-    }
+    ///public List<Type> Typelist; 
+
 
     public void OnEnable()
     {
@@ -27,18 +21,12 @@ public class GlobalEventlistEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        
-        data = (GlobalEventData)target;
-        var Text = GUILayout.TextField(LibaryLocation);
-        LibaryLocation = Text;
-        Debug.Log(LibaryLocation);
-        Header();
-
-        DisplayData(data);
+     
+        Header(); 
         AddData(data);
         ClearData(data);
-        DrawDefaultInspector();
-
+        DisplayData(data);
+        //GetAllTypes();
     }
 
     void Header()
@@ -53,15 +41,15 @@ public class GlobalEventlistEditor : Editor
     }
     public void DisplayData(GlobalEventData data)
     {
+
         if (data.testData != null)
         {
-
             for (int i = 0; i < data.testData.Count; i++)
             {
                 DisplayElement(i, data.testData[i]);
             }
-
         }
+
     }
     public void DisplayElement(int i, MessageData Data)
     {
@@ -78,7 +66,7 @@ public class GlobalEventlistEditor : Editor
 
         GUILayout.Space(10);
         #endregion
-
+         
         #region ID
         var IntStyle = GUI.skin.textField;
         IntStyle.fixedHeight = 20;
@@ -92,26 +80,13 @@ public class GlobalEventlistEditor : Editor
         #endregion
 
         #region Type
-
-
-
-
+        /* Needs a better plan to implements, revisit idea to spec type at a later date
+      
 
         var Content = new GUIContent(Data.Type.ToString());
         GenericMenu menu = new GenericMenu();
 
-        //Debug.Log(Application.dataPath);
-
-        //Assembly myAssembly = Assembly.ReflectionOnlyLoadFrom(string.Format("{0}\\Assembly-CSharp.dll", LibaryLocation));
-
-        var ValueType = from T in System.AppDomain.CurrentDomain.GetAssemblies()
-                        select T.GetTypes();
-
-
-
-        ////
-
-        foreach (var valueType in ValueType)
+        foreach (var valueType in Typelist)
         {
             menu.AddItem(new GUIContent(valueType.ToString()), false, dostuff, valueType);
         }
@@ -130,6 +105,8 @@ public class GlobalEventlistEditor : Editor
             menu.ShowAsContext();
         };
         
+        
+        */
         #endregion
 
         GUILayout.EndHorizontal();
@@ -166,14 +143,12 @@ public class GlobalEventlistEditor : Editor
     {
         if (GUILayout.Button("Add Event"))
         {
-            TestPopulate(data);
+            AddSingleElement(data);
         }
     }
 
-    public void TestPopulate(GlobalEventData Data)
+    public void AddSingleElement(GlobalEventData Data)
     {
-
-
 
         if (Data.testData == null)
         {
@@ -181,16 +156,44 @@ public class GlobalEventlistEditor : Editor
         }
 
         int C1 = Data.testData.Count;
-        int c2 = C1 + 5;
-        for (int i = C1; i < c2 + 5; i++)
+        int c2 = C1 + 1;
+        for (int i = C1; i < c2; i++)
         {
             //Data.Events.Add(new MessageData(i,Time.frameCount.ToString()));
-           Data.testData.Add(new MessageData(i, "OnEventNamedSomethingLongforTesting",typeof(object)));
+           Data.testData.Add(new MessageData(i, "OnEventNamed",typeof(object)));
            
         }        
         EditorUtility.SetDirty(Data);
         AssetDatabase.SaveAssets();
     }
 
+    //public List<Type> GetAllTypes()
+    //{
+
+
+    //    string Pattern = "(UnityEngine|System|Assembly-CSharp)";
+
+    //    var ValueType = from T in System.AppDomain.CurrentDomain.GetAssemblies()
+    //                    from T1 in T.GetTypes()
+    //                    where Regex.Match(T1.FullName, Pattern).Success
+    //                    select T1;
+
+
+    //    foreach (var item in ValueType)
+    //    {
+    //        //Debug.Log(item);
+    //    }
+
+
+    //    //foreach (var item in ValueType)
+    //    //{
+    //    //        Debug.Log(item);      
+    //    //}
+
+       
+
+
+    //    return ValueType.ToList();
+    //}
 
 }
